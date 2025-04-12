@@ -8,17 +8,26 @@ import { useData } from '@/context/DataContext';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 
-// Define the structure of internship data from Supabase
-interface SupabaseInternship {
-  id: string;
-  title: string | null;
-  company: string | null;
-  date: string | null;
-  work_model: string | null;
-  location: string | null;
-  salary: string | null;
+// Define the database response type
+interface SupabaseInternshipResponse {
   apply: string | null;
+  company: string | null;
+  company_industry: string | null;
+  company_size: string | null;
   created_at: string | null;
+  date: string | null;
+  graduate_time: string | null;
+  hire_time: string | null;
+  location: string | null;
+  qualifications: string | null;
+  salary: string | null;
+  title: string | null;
+  work_model: string | null;
+}
+
+// Define our app's internship type with guaranteed id
+interface SupabaseInternship extends SupabaseInternshipResponse {
+  id: string;
 }
 
 const Saved: React.FC = () => {
@@ -52,11 +61,11 @@ const Saved: React.FC = () => {
         
         if (error) throw error;
         
-        // Ensure each record has an id
-        const internshipsWithId = data?.map(item => ({
+        // Ensure each record has an id by generating one if missing
+        const internshipsWithId = (data || []).map((item: SupabaseInternshipResponse) => ({
           ...item,
-          id: item.id || `internship-${Math.random().toString(36).substring(2, 9)}`
-        })) as SupabaseInternship[] || [];
+          id: `internship-${Math.random().toString(36).substring(2, 9)}`
+        })) as SupabaseInternship[];
         
         setSupabaseInternships(internshipsWithId);
       } catch (err) {

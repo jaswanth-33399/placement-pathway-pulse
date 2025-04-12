@@ -12,15 +12,26 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 
-interface InternshipRaw {
-  id?: string; // Make id optional in the interface
-  title: string | null;
-  company: string | null;
-  work_model: string | null;
-  location: string | null;
-  salary: string | null;
+// Define the database response type without an id
+interface SupabaseInternshipResponse {
   apply: string | null;
+  company: string | null;
+  company_industry: string | null;
+  company_size: string | null;
   created_at: string | null;
+  date: string | null;
+  graduate_time: string | null;
+  hire_time: string | null;
+  location: string | null;
+  qualifications: string | null;
+  salary: string | null;
+  title: string | null;
+  work_model: string | null;
+}
+
+// Define our app's internship type with an id
+interface InternshipRaw extends SupabaseInternshipResponse {
+  id: string; // We'll always ensure this exists in our app
 }
 
 const InternshipsList = () => {
@@ -45,11 +56,11 @@ const InternshipsList = () => {
         
         if (error) throw error;
         
-        // Ensure each record has an id
-        const internshipsWithId = data?.map(item => ({
+        // Ensure each record has an id by generating one if it doesn't exist
+        const internshipsWithId = (data || []).map((item: SupabaseInternshipResponse) => ({
           ...item,
-          id: item.id || `internship-${Math.random().toString(36).substring(2, 9)}`
-        })) || [];
+          id: `internship-${Math.random().toString(36).substring(2, 9)}`
+        }));
         
         setInternships(internshipsWithId);
       } catch (err) {
@@ -182,10 +193,10 @@ const InternshipsList = () => {
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => internship.id && handleSaveToggle(internship.id)}
-                  className={cn(internship.id && savedInternships.includes(internship.id) && "text-ipblue-600")}
+                  onClick={() => handleSaveToggle(internship.id)}
+                  className={cn(savedInternships.includes(internship.id) && "text-ipblue-600")}
                 >
-                  <Bookmark className={cn("h-5 w-5", internship.id && savedInternships.includes(internship.id) ? "fill-current" : "")} />
+                  <Bookmark className={cn("h-5 w-5", savedInternships.includes(internship.id) ? "fill-current" : "")} />
                 </Button>
               </div>
               <div className="text-sm font-semibold text-ipblue-700">{internship.company || 'Unknown Company'}</div>
