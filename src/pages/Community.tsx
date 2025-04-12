@@ -10,7 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Label } from '@/components/ui/label';
 import { useData } from '@/context/DataContext';
-import { toast } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 
 const Community: React.FC = () => {
   const { 

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useMemo } from 'react';
 import NavBar from '@/components/NavBar';
 import CalendarEventForm from '@/components/CalendarEventForm';
@@ -7,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { useData } from '@/context/DataContext';
 import { Plus, ExternalLink, Trash2 } from 'lucide-react';
-import { toast } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 
 // Format date for calendar display
 const formatDate = (date: Date): string => {

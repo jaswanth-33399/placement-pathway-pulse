@@ -5,7 +5,7 @@ import InternshipCard from '@/components/InternshipCard';
 import JobCard from '@/components/JobCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useData } from '@/context/DataContext';
-import { toast } from '@/components/ui/sonner';
+import { toast } from 'sonner';
 
 const Saved: React.FC = () => {
   const { 
