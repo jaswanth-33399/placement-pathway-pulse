@@ -13,6 +13,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Label } from '@/components/ui/label';
 
 interface InternshipRaw {
+  id?: string; // Make id optional in the interface
   title: string | null;
   company: string | null;
   work_model: string | null;
@@ -23,7 +24,7 @@ interface InternshipRaw {
 }
 
 const InternshipsList = () => {
-  const [internships, setInternships] = useState<(InternshipRaw & { id: string })[]>([]);
+  const [internships, setInternships] = useState<InternshipRaw[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const { savedInternships, saveInternship, unsaveInternship } = useData();
@@ -44,7 +45,13 @@ const InternshipsList = () => {
         
         if (error) throw error;
         
-        setInternships(data || []);
+        // Ensure each record has an id
+        const internshipsWithId = data?.map(item => ({
+          ...item,
+          id: item.id || `internship-${Math.random().toString(36).substring(2, 9)}`
+        })) || [];
+        
+        setInternships(internshipsWithId);
       } catch (err) {
         console.error('Error fetching internships:', err);
         setError('Failed to load internships');
@@ -175,10 +182,10 @@ const InternshipsList = () => {
                 <Button
                   variant="ghost"
                   size="icon"
-                  onClick={() => handleSaveToggle(internship.id)}
-                  className={cn(savedInternships.includes(internship.id) && "text-ipblue-600")}
+                  onClick={() => internship.id && handleSaveToggle(internship.id)}
+                  className={cn(internship.id && savedInternships.includes(internship.id) && "text-ipblue-600")}
                 >
-                  <Bookmark className={cn("h-5 w-5", savedInternships.includes(internship.id) ? "fill-current" : "")} />
+                  <Bookmark className={cn("h-5 w-5", internship.id && savedInternships.includes(internship.id) ? "fill-current" : "")} />
                 </Button>
               </div>
               <div className="text-sm font-semibold text-ipblue-700">{internship.company || 'Unknown Company'}</div>

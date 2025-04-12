@@ -8,6 +8,19 @@ import { useData } from '@/context/DataContext';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 
+// Define the structure of internship data from Supabase
+interface SupabaseInternship {
+  id: string;
+  title: string | null;
+  company: string | null;
+  date: string | null;
+  work_model: string | null;
+  location: string | null;
+  salary: string | null;
+  apply: string | null;
+  created_at: string | null;
+}
+
 const Saved: React.FC = () => {
   const { 
     jobs, 
@@ -19,7 +32,7 @@ const Saved: React.FC = () => {
     unsaveJob
   } = useData();
   
-  const [supabaseInternships, setSupabaseInternships] = useState<any[]>([]);
+  const [supabaseInternships, setSupabaseInternships] = useState<SupabaseInternship[]>([]);
   const [loading, setLoading] = useState(true);
   
   // Fetch saved internships from Supabase
@@ -39,7 +52,13 @@ const Saved: React.FC = () => {
         
         if (error) throw error;
         
-        setSupabaseInternships(data || []);
+        // Ensure each record has an id
+        const internshipsWithId = data?.map(item => ({
+          ...item,
+          id: item.id || `internship-${Math.random().toString(36).substring(2, 9)}`
+        })) as SupabaseInternship[] || [];
+        
+        setSupabaseInternships(internshipsWithId);
       } catch (err) {
         console.error('Error fetching saved internships:', err);
         toast.error('Failed to load saved internships');
