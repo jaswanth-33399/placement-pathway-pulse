@@ -70,7 +70,8 @@ const Saved: React.FC = () => {
         if (error) throw error;
         
         // Map each record to our SavedInternship type, ensuring id exists
-        const internshipsWithId = (data || []).map((item: SupabaseInternshipRecord) => ({
+        const typedData = data as SupabaseInternshipRecord[] | null;
+        const internshipsWithId = (typedData || []).map((item) => ({
           id: item.id || `internship-${Math.random().toString(36).substring(2, 9)}`,
           apply: item.apply,
           company: item.company,
