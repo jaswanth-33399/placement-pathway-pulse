@@ -13,8 +13,8 @@ const Internships: React.FC = () => {
   const { internships, savedInternships, saveInternship, unsaveInternship } = useData();
   
   // Filters
-  const [role, setRole] = useState('');
-  const [period, setPeriod] = useState('');
+  const [role, setRole] = useState('all');
+  const [period, setPeriod] = useState('all');
   const [mode, setMode] = useState<'all' | 'offline' | 'online'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   
@@ -32,8 +32,8 @@ const Internships: React.FC = () => {
   // Filter internships based on selected criteria
   const filteredInternships = useMemo(() => {
     return internships.filter(internship => {
-      const matchesRole = !role || internship.role === role;
-      const matchesPeriod = !period || internship.period === period;
+      const matchesRole = role === 'all' || internship.role === role;
+      const matchesPeriod = period === 'all' || internship.period === period;
       const matchesMode = mode === 'all' || internship.mode === mode;
       const matchesSearch = !searchQuery || 
         internship.company.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -57,8 +57,8 @@ const Internships: React.FC = () => {
   
   // Reset filters
   const handleResetFilters = () => {
-    setRole('');
-    setPeriod('');
+    setRole('all');
+    setPeriod('all');
     setMode('all');
     setSearchQuery('');
   };
@@ -93,7 +93,7 @@ const Internships: React.FC = () => {
                   <SelectValue placeholder="Select Role" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Roles</SelectItem>
+                  <SelectItem value="all">All Roles</SelectItem>
                   {uniqueRoles.map(role => (
                     <SelectItem key={role} value={role}>{role}</SelectItem>
                   ))}
@@ -108,7 +108,7 @@ const Internships: React.FC = () => {
                   <SelectValue placeholder="Select Duration" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Durations</SelectItem>
+                  <SelectItem value="all">All Durations</SelectItem>
                   {uniquePeriods.map(period => (
                     <SelectItem key={period} value={period}>{period}</SelectItem>
                   ))}
