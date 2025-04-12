@@ -1,15 +1,15 @@
 
-import React, { useMemo } from 'react';
+import React, { useState, useEffect } from 'react';
 import NavBar from '@/components/NavBar';
 import InternshipCard from '@/components/InternshipCard';
 import JobCard from '@/components/JobCard';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useData } from '@/context/DataContext';
 import { toast } from 'sonner';
+import { supabase } from '@/integrations/supabase/client';
 
 const Saved: React.FC = () => {
   const { 
-    internships, 
     jobs, 
     savedInternships, 
     savedJobs, 
@@ -19,12 +19,40 @@ const Saved: React.FC = () => {
     unsaveJob
   } = useData();
   
-  // Get saved internships and jobs
-  const savedInternshipItems = useMemo(() => {
-    return internships.filter(internship => savedInternships.includes(internship.id));
-  }, [internships, savedInternships]);
+  const [supabaseInternships, setSupabaseInternships] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   
-  const savedJobItems = useMemo(() => {
+  // Fetch saved internships from Supabase
+  useEffect(() => {
+    const fetchSavedInternships = async () => {
+      if (savedInternships.length === 0) {
+        setSupabaseInternships([]);
+        setLoading(false);
+        return;
+      }
+      
+      try {
+        const { data, error } = await supabase
+          .from('internships_raw')
+          .select('*')
+          .in('id', savedInternships);
+        
+        if (error) throw error;
+        
+        setSupabaseInternships(data || []);
+      } catch (err) {
+        console.error('Error fetching saved internships:', err);
+        toast.error('Failed to load saved internships');
+      } finally {
+        setLoading(false);
+      }
+    };
+    
+    fetchSavedInternships();
+  }, [savedInternships]);
+  
+  // Get saved jobs
+  const savedJobItems = React.useMemo(() => {
     return jobs.filter(job => savedJobs.includes(job.id));
   }, [jobs, savedJobs]);
   
@@ -61,34 +89,40 @@ const Saved: React.FC = () => {
         
         <Tabs defaultValue="internships" className="space-y-6">
           <TabsList>
-            <TabsTrigger value="internships">Internships ({savedInternshipItems.length})</TabsTrigger>
+            <TabsTrigger value="internships">Internships ({savedInternships.length})</TabsTrigger>
             <TabsTrigger value="jobs">Jobs ({savedJobItems.length})</TabsTrigger>
           </TabsList>
           
           <TabsContent value="internships" className="space-y-6">
-            {savedInternshipItems.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {savedInternshipItems.map(internship => (
-                  <InternshipCard
-                    key={internship.id}
-                    id={internship.id}
-                    company={internship.company}
-                    role={internship.role}
-                    period={internship.period}
-                    mode={internship.mode}
-                    description={internship.description}
-                    applyLink={internship.applyLink}
-                    isSaved={true}
-                    onSave={() => handleSaveInternship(internship.id)}
-                    onUnsave={() => handleUnsaveInternship(internship.id)}
-                  />
-                ))}
-              </div>
+            {loading ? (
+              <div className="text-center py-12">Loading saved internships...</div>
             ) : (
-              <div className="text-center py-12">
-                <h3 className="text-lg font-medium text-gray-900 mb-2">No saved internships</h3>
-                <p className="text-gray-500">Internships you save will appear here</p>
-              </div>
+              <>
+                {supabaseInternships.length > 0 ? (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {supabaseInternships.map(internship => (
+                      <InternshipCard
+                        key={internship.id}
+                        id={internship.id}
+                        company={internship.company || 'Unknown Company'}
+                        role={internship.title || 'Untitled Internship'}
+                        period={internship.date || 'N/A'}
+                        mode={internship.work_model?.toLowerCase().includes('remote') ? 'online' : 'offline'}
+                        description={`${internship.location || ''} ${internship.salary ? '• ' + internship.salary : ''}`}
+                        applyLink={internship.apply || '#'}
+                        isSaved={true}
+                        onSave={() => handleSaveInternship(internship.id)}
+                        onUnsave={() => handleUnsaveInternship(internship.id)}
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-12">
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">No saved internships</h3>
+                    <p className="text-gray-500">Internships you save will appear here</p>
+                  </div>
+                )}
+              </>
             )}
           </TabsContent>
           

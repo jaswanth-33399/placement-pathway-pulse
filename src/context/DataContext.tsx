@@ -1,6 +1,6 @@
-
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 
 // Types
 interface InternshipData {
@@ -207,31 +207,55 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Load user-specific data when user changes
   useEffect(() => {
     if (user) {
-      const users = JSON.parse(localStorage.getItem('ipdriveUsers') || '[]');
-      const currentUser = users.find((u: any) => u.id === user.id);
+      // Fetch saved internships from Supabase profiles table
+      const fetchUserProfile = async () => {
+        try {
+          const { data, error } = await supabase
+            .from('profiles')
+            .select('saved_internships')
+            .eq('id', user.id)
+            .single();
+          
+          if (error) {
+            console.error('Error fetching user profile:', error);
+            return;
+          }
+          
+          if (data?.saved_internships) {
+            setSavedInternships(data.saved_internships);
+          }
+          
+          // Load saved jobs
+          const users = JSON.parse(localStorage.getItem('ipdriveUsers') || '[]');
+          const currentUser = users.find((u: any) => u.id === user.id);
+          
+          if (currentUser) {
+            setSavedJobs(currentUser.savedJobs || []);
+            
+            // Load calendar events
+            const storedEvents = localStorage.getItem(`ipdriveEvents-${user.id}`);
+            if (storedEvents) {
+              setCalendarEvents(JSON.parse(storedEvents));
+            }
+            
+            // Load company reviews if they exist
+            const storedReviews = localStorage.getItem('ipdriveCompanyReviews');
+            if (storedReviews) {
+              setCompanyReviews(JSON.parse(storedReviews));
+            }
+            
+            // Load discussion posts if they exist
+            const storedPosts = localStorage.getItem('ipdriveDiscussionPosts');
+            if (storedPosts) {
+              setDiscussionPosts(JSON.parse(storedPosts));
+            }
+          }
+        } catch (err) {
+          console.error('Error loading user data:', err);
+        }
+      };
       
-      if (currentUser) {
-        setSavedInternships(currentUser.savedInternships || []);
-        setSavedJobs(currentUser.savedJobs || []);
-        
-        // Load calendar events
-        const storedEvents = localStorage.getItem(`ipdriveEvents-${user.id}`);
-        if (storedEvents) {
-          setCalendarEvents(JSON.parse(storedEvents));
-        }
-        
-        // Load company reviews if they exist
-        const storedReviews = localStorage.getItem('ipdriveCompanyReviews');
-        if (storedReviews) {
-          setCompanyReviews(JSON.parse(storedReviews));
-        }
-        
-        // Load discussion posts if they exist
-        const storedPosts = localStorage.getItem('ipdriveDiscussionPosts');
-        if (storedPosts) {
-          setDiscussionPosts(JSON.parse(storedPosts));
-        }
-      }
+      fetchUserProfile();
     } else {
       // Clear user-specific data when logged out
       setSavedInternships([]);
@@ -244,6 +268,7 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const updateUserData = (updates: any) => {
     if (!user) return;
     
+    // For saved jobs, we still use localStorage
     const users = JSON.parse(localStorage.getItem('ipdriveUsers') || '[]');
     const userIndex = users.findIndex((u: any) => u.id === user.id);
     
@@ -253,19 +278,53 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  // CRUD operations
-  const saveInternship = (id: string) => {
+  // CRUD operations for saved internships using Supabase
+  const saveInternship = async (id: string) => {
     if (!user) return;
+    
     const newSaved = [...savedInternships, id];
     setSavedInternships(newSaved);
-    updateUserData({ savedInternships: newSaved });
+    
+    // Update in Supabase
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ saved_internships: newSaved })
+        .eq('id', user.id);
+      
+      if (error) {
+        console.error('Error saving internship:', error);
+        // Revert state if Supabase update fails
+        setSavedInternships(savedInternships);
+      }
+    } catch (err) {
+      console.error('Error saving internship:', err);
+      setSavedInternships(savedInternships);
+    }
   };
 
-  const unsaveInternship = (id: string) => {
+  const unsaveInternship = async (id: string) => {
     if (!user) return;
+    
     const newSaved = savedInternships.filter(i => i !== id);
     setSavedInternships(newSaved);
-    updateUserData({ savedInternships: newSaved });
+    
+    // Update in Supabase
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ saved_internships: newSaved })
+        .eq('id', user.id);
+      
+      if (error) {
+        console.error('Error unsaving internship:', error);
+        // Revert state if Supabase update fails
+        setSavedInternships(savedInternships);
+      }
+    } catch (err) {
+      console.error('Error unsaving internship:', err);
+      setSavedInternships(savedInternships);
+    }
   };
 
   const saveJob = (id: string) => {
