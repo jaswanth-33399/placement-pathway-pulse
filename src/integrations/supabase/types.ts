@@ -57,6 +57,114 @@ export type Database = {
         }
         Relationships: []
       }
+      job_market: {
+        Row: {
+          application_deadline: string | null
+          company_name: string | null
+          company_size: string | null
+          education_requirement: string | null
+          experience_required: string | null
+          job_id: string | null
+          job_location: string | null
+          job_portal: string | null
+          job_title: string | null
+          job_type: string | null
+          number_of_applicants: number | null
+          posted_date: string | null
+          remote_onsite: string | null
+          salary_range: string | null
+          skills_required: string | null
+        }
+        Insert: {
+          application_deadline?: string | null
+          company_name?: string | null
+          company_size?: string | null
+          education_requirement?: string | null
+          experience_required?: string | null
+          job_id?: string | null
+          job_location?: string | null
+          job_portal?: string | null
+          job_title?: string | null
+          job_type?: string | null
+          number_of_applicants?: number | null
+          posted_date?: string | null
+          remote_onsite?: string | null
+          salary_range?: string | null
+          skills_required?: string | null
+        }
+        Update: {
+          application_deadline?: string | null
+          company_name?: string | null
+          company_size?: string | null
+          education_requirement?: string | null
+          experience_required?: string | null
+          job_id?: string | null
+          job_location?: string | null
+          job_portal?: string | null
+          job_title?: string | null
+          job_type?: string | null
+          number_of_applicants?: number | null
+          posted_date?: string | null
+          remote_onsite?: string | null
+          salary_range?: string | null
+          skills_required?: string | null
+        }
+        Relationships: []
+      }
+      job_markets: {
+        Row: {
+          application_deadline: string | null
+          company_name: string | null
+          company_size: string | null
+          education_requirement: string | null
+          experience_required: string | null
+          job_id: string | null
+          job_location: string | null
+          job_portal: string | null
+          job_title: string | null
+          job_type: string | null
+          number_of_applicants: number | null
+          posted_date: string | null
+          remote_onsite: string | null
+          salary_range: string | null
+          skills_required: string | null
+        }
+        Insert: {
+          application_deadline?: string | null
+          company_name?: string | null
+          company_size?: string | null
+          education_requirement?: string | null
+          experience_required?: string | null
+          job_id?: string | null
+          job_location?: string | null
+          job_portal?: string | null
+          job_title?: string | null
+          job_type?: string | null
+          number_of_applicants?: number | null
+          posted_date?: string | null
+          remote_onsite?: string | null
+          salary_range?: string | null
+          skills_required?: string | null
+        }
+        Update: {
+          application_deadline?: string | null
+          company_name?: string | null
+          company_size?: string | null
+          education_requirement?: string | null
+          experience_required?: string | null
+          job_id?: string | null
+          job_location?: string | null
+          job_portal?: string | null
+          job_title?: string | null
+          job_type?: string | null
+          number_of_applicants?: number | null
+          posted_date?: string | null
+          remote_onsite?: string | null
+          salary_range?: string | null
+          skills_required?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           id: string

@@ -26,8 +26,15 @@ interface SupabaseInternshipResponse {
 }
 
 // Define our app's internship type with guaranteed id
-interface SupabaseInternship extends SupabaseInternshipResponse {
+interface SavedInternship {
   id: string;
+  apply: string | null;
+  company: string | null;
+  date: string | null;
+  location: string | null;
+  salary: string | null;
+  title: string | null;
+  work_model: string | null;
 }
 
 const Saved: React.FC = () => {
@@ -41,7 +48,7 @@ const Saved: React.FC = () => {
     unsaveJob
   } = useData();
   
-  const [supabaseInternships, setSupabaseInternships] = useState<SupabaseInternship[]>([]);
+  const [supabaseInternships, setSupabaseInternships] = useState<SavedInternship[]>([]);
   const [loading, setLoading] = useState(true);
   
   // Fetch saved internships from Supabase
@@ -65,7 +72,7 @@ const Saved: React.FC = () => {
         const internshipsWithId = (data || []).map((item: SupabaseInternshipResponse) => ({
           ...item,
           id: `internship-${Math.random().toString(36).substring(2, 9)}`
-        })) as SupabaseInternship[];
+        }));
         
         setSupabaseInternships(internshipsWithId);
       } catch (err) {

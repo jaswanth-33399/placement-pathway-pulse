@@ -3,7 +3,7 @@ import React from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Bookmark, ExternalLink } from 'lucide-react';
+import { Bookmark, ExternalLink, Calendar, MapPin, Briefcase, DollarSign } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface JobCardProps {
@@ -30,22 +30,23 @@ const JobCard: React.FC<JobCardProps> = ({
   onUnsave
 }) => {
   return (
-    <Card className="h-full hover:shadow-md transition-shadow duration-300">
+    <Card className="h-full hover:shadow-md transition-shadow duration-300 flex flex-col">
       <CardHeader className="pb-2">
         <div className="flex justify-between items-start">
-          <CardTitle className="text-lg">{role}</CardTitle>
+          <CardTitle className="text-lg font-semibold line-clamp-2">{role}</CardTitle>
           <Button
             variant="ghost"
             size="icon"
             onClick={isSaved ? onUnsave : onSave}
             className={cn(isSaved && "text-ipblue-600")}
+            aria-label={isSaved ? "Unsave job" : "Save job"}
           >
             <Bookmark className={cn("h-5 w-5", isSaved ? "fill-current" : "")} />
           </Button>
         </div>
         <div className="text-sm font-semibold text-ipblue-700">{company}</div>
       </CardHeader>
-      <CardContent className="pb-4">
+      <CardContent className="pb-4 flex-grow">
         <div className="flex flex-wrap gap-2 mb-3">
           <Badge 
             variant={
@@ -59,7 +60,11 @@ const JobCard: React.FC<JobCardProps> = ({
             {mode === 'online' ? 'Remote' : mode === 'hybrid' ? 'Hybrid' : 'On-site'}
           </Badge>
         </div>
-        <p className="text-sm text-muted-foreground line-clamp-3">{description}</p>
+        <div className="text-sm text-muted-foreground space-y-2">
+          {description.split('\n').filter(Boolean).map((line, index) => (
+            <p key={index} className="line-clamp-1">{line.trim()}</p>
+          ))}
+        </div>
       </CardContent>
       <CardFooter className="pt-0">
         <Button 
@@ -67,7 +72,7 @@ const JobCard: React.FC<JobCardProps> = ({
           className="w-full bg-ipblue-600 hover:bg-ipblue-700 gap-2"
         >
           <a href={applyLink} target="_blank" rel="noopener noreferrer">
-            Apply <ExternalLink className="h-4 w-4" />
+            Apply Now <ExternalLink className="h-4 w-4" />
           </a>
         </Button>
       </CardFooter>
