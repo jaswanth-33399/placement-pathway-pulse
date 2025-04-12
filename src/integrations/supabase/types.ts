@@ -15,6 +15,7 @@ export type Database = {
           company: string | null
           company_industry: string | null
           company_size: string | null
+          created_at: string | null
           date: string | null
           graduate_time: string | null
           hire_time: string | null
@@ -29,6 +30,7 @@ export type Database = {
           company?: string | null
           company_industry?: string | null
           company_size?: string | null
+          created_at?: string | null
           date?: string | null
           graduate_time?: string | null
           hire_time?: string | null
@@ -43,6 +45,7 @@ export type Database = {
           company?: string | null
           company_industry?: string | null
           company_size?: string | null
+          created_at?: string | null
           date?: string | null
           graduate_time?: string | null
           hire_time?: string | null
@@ -51,6 +54,24 @@ export type Database = {
           salary?: string | null
           title?: string | null
           work_model?: string | null
+        }
+        Relationships: []
+      }
+      profiles: {
+        Row: {
+          id: string
+          saved_internships: string[] | null
+          username: string | null
+        }
+        Insert: {
+          id: string
+          saved_internships?: string[] | null
+          username?: string | null
+        }
+        Update: {
+          id?: string
+          saved_internships?: string[] | null
+          username?: string | null
         }
         Relationships: []
       }
