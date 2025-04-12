@@ -8,8 +8,9 @@ import { useData } from '@/context/DataContext';
 import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 
-// Define the database response type
-interface SupabaseInternshipResponse {
+// Define the database response type with explicit nullability
+interface SupabaseInternshipRecord {
+  id?: string;
   apply: string | null;
   company: string | null;
   company_industry: string | null;
@@ -25,7 +26,7 @@ interface SupabaseInternshipResponse {
   work_model: string | null;
 }
 
-// Define our app's internship type with guaranteed id
+// Application-specific type with guaranteed id field
 interface SavedInternship {
   id: string;
   apply: string | null;
@@ -68,10 +69,16 @@ const Saved: React.FC = () => {
         
         if (error) throw error;
         
-        // Ensure each record has an id by generating one if missing
-        const internshipsWithId = (data || []).map((item: SupabaseInternshipResponse) => ({
-          ...item,
-          id: `internship-${Math.random().toString(36).substring(2, 9)}`
+        // Map each record to our SavedInternship type, ensuring id exists
+        const internshipsWithId = (data || []).map((item: SupabaseInternshipRecord) => ({
+          id: item.id || `internship-${Math.random().toString(36).substring(2, 9)}`,
+          apply: item.apply,
+          company: item.company,
+          date: item.date,
+          location: item.location,
+          salary: item.salary,
+          title: item.title,
+          work_model: item.work_model
         }));
         
         setSupabaseInternships(internshipsWithId);
