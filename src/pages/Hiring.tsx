@@ -13,7 +13,7 @@ const Hiring: React.FC = () => {
   const { jobs, savedJobs, saveJob, unsaveJob } = useData();
   
   // Filters
-  const [role, setRole] = useState('');
+  const [role, setRole] = useState('all');
   const [mode, setMode] = useState<'all' | 'offline' | 'online' | 'hybrid'>('all');
   const [searchQuery, setSearchQuery] = useState('');
   
@@ -26,7 +26,7 @@ const Hiring: React.FC = () => {
   // Filter jobs based on selected criteria
   const filteredJobs = useMemo(() => {
     return jobs.filter(job => {
-      const matchesRole = !role || job.role === role;
+      const matchesRole = role === 'all' || job.role === role;
       const matchesMode = mode === 'all' || job.mode === mode;
       const matchesSearch = !searchQuery || 
         job.company.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -50,7 +50,7 @@ const Hiring: React.FC = () => {
   
   // Reset filters
   const handleResetFilters = () => {
-    setRole('');
+    setRole('all');
     setMode('all');
     setSearchQuery('');
   };
@@ -85,7 +85,7 @@ const Hiring: React.FC = () => {
                   <SelectValue placeholder="Select Role" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">All Roles</SelectItem>
+                  <SelectItem value="all">All Roles</SelectItem>
                   {uniqueRoles.map(role => (
                     <SelectItem key={role} value={role}>{role}</SelectItem>
                   ))}
