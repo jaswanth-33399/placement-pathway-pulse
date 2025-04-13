@@ -15,6 +15,7 @@ import Internships from "./pages/Internships";
 import Hiring from "./pages/Hiring";
 import Calendar from "./pages/Calendar";
 import Resources from "./pages/Resources";
+import AIQuiz from "./pages/AIQuiz";
 import Community from "./pages/Community";
 import Saved from "./pages/Saved";
 import NavigationLinks from "./pages/NavigationLinks";
@@ -60,6 +61,12 @@ const App = () => (
               <Route path="/resources" element={
                 <ProtectedRoute>
                   <Resources />
+                </ProtectedRoute>
+              } />
+              
+              <Route path="/ai-quiz" element={
+                <ProtectedRoute>
+                  <AIQuiz />
                 </ProtectedRoute>
               } />
               

@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import NavBar from '@/components/NavBar';
 import { useAuth } from '@/context/AuthContext';
 import { useData } from '@/context/DataContext';
-import { Calendar, BriefcaseIcon, BookmarkIcon, Megaphone, LibraryIcon, MessagesSquare } from 'lucide-react';
+import { Calendar, BookmarkIcon, Megaphone, BriefcaseIcon, GraduationCap, MessagesSquare } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Dashboard: React.FC = () => {
@@ -49,8 +49,8 @@ const Dashboard: React.FC = () => {
           <Card>
             <CardHeader className="pb-2">
               <CardTitle className="text-lg flex items-center">
-                <BriefcaseIcon className="h-5 w-5 mr-2 text-ipblue-600" />
-                Opportunities
+                <GraduationCap className="h-5 w-5 mr-2 text-ipblue-600" />
+                Browse Internships
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -60,22 +60,37 @@ const Dashboard: React.FC = () => {
                   <span className="font-medium">{internships.length}</span>
                 </div>
                 <div className="flex justify-between">
+                  <span className="text-gray-600">Saved Internships</span>
+                  <span className="font-medium">{savedInternships.length}</span>
+                </div>
+              </div>
+              <Button className="w-full mt-4 bg-ipblue-600 hover:bg-ipblue-700" asChild>
+                <Link to="/internships">View Internships</Link>
+              </Button>
+            </CardContent>
+          </Card>
+          
+          <Card>
+            <CardHeader className="pb-2">
+              <CardTitle className="text-lg flex items-center">
+                <BriefcaseIcon className="h-5 w-5 mr-2 text-ipblue-600" />
+                Browse Jobs
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-2">
+                <div className="flex justify-between">
                   <span className="text-gray-600">Available Jobs</span>
                   <span className="font-medium">{jobs.length}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-gray-600">Saved Items</span>
-                  <span className="font-medium">{savedInternships.length + savedJobs.length}</span>
+                  <span className="text-gray-600">Saved Jobs</span>
+                  <span className="font-medium">{savedJobs.length}</span>
                 </div>
               </div>
-              <div className="mt-4 space-y-2">
-                <Button className="w-full bg-ipblue-600 hover:bg-ipblue-700" asChild>
-                  <Link to="/internships">Browse Internships</Link>
-                </Button>
-                <Button className="w-full" variant="outline" asChild>
-                  <Link to="/hiring">Browse Jobs</Link>
-                </Button>
-              </div>
+              <Button className="w-full mt-4 bg-ipblue-600 hover:bg-ipblue-700" asChild>
+                <Link to="/hiring">View Jobs</Link>
+              </Button>
             </CardContent>
           </Card>
           
@@ -111,15 +126,17 @@ const Dashboard: React.FC = () => {
               </Button>
             </CardContent>
           </Card>
-          
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card>
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg flex items-center">
+            <CardHeader>
+              <CardTitle className="flex items-center">
                 <MessagesSquare className="h-5 w-5 mr-2 text-ipblue-600" />
                 Community Activity
               </CardTitle>
             </CardHeader>
-            <CardContent>
+            <CardContent className="space-y-4">
               {recentPosts.length > 0 ? (
                 <div className="space-y-3">
                   {recentPosts.map(post => (
@@ -134,25 +151,8 @@ const Dashboard: React.FC = () => {
               ) : (
                 <p className="text-gray-500 text-sm">No recent posts</p>
               )}
-              <Button className="w-full mt-4" variant="outline" asChild>
-                <Link to="/community">Join Discussion</Link>
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <LibraryIcon className="h-5 w-5 mr-2 text-ipblue-600" />
-                Prepare for Interviews
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <p className="text-gray-600">Access mock tests and AI-powered quizzes to enhance your skills.</p>
               <Button className="w-full bg-ipblue-600 hover:bg-ipblue-700" asChild>
-                <Link to="/resources">Browse Resources</Link>
+                <Link to="/community">Join Discussion</Link>
               </Button>
             </CardContent>
           </Card>
@@ -161,13 +161,13 @@ const Dashboard: React.FC = () => {
             <CardHeader>
               <CardTitle className="flex items-center">
                 <Megaphone className="h-5 w-5 mr-2 text-ipblue-600" />
-                Company Reviews
+                Resources
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-gray-600">Read reviews or share your own experience with companies.</p>
+              <p className="text-gray-600">Access study materials and resources to enhance your skills.</p>
               <Button className="w-full bg-ipblue-600 hover:bg-ipblue-700" asChild>
-                <Link to="/community">View Community</Link>
+                <Link to="/resources">Browse Resources</Link>
               </Button>
             </CardContent>
           </Card>
