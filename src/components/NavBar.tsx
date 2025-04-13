@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '@/context/AuthContext';
@@ -5,7 +6,6 @@ import {
   Briefcase,
   Calendar,
   Home,
-  Lightbulb,
   Book,
   Users,
   Save,
@@ -25,7 +25,7 @@ import {
 import { Button } from "@/components/ui/button"
 
 const NavBar: React.FC = () => {
-  const { user, signOut } = useAuth();
+  const { user, logout } = useAuth();
   const location = useLocation();
 
   // Update the navigation items array to include the new AI Quiz page and rename Resources
@@ -71,7 +71,7 @@ const NavBar: React.FC = () => {
                     {user.username}
                   </span>
                   <button
-                    onClick={() => signOut()}
+                    onClick={() => logout()}
                     className="bg-ipblue-600 hover:bg-ipblue-700 text-white px-3 py-2 rounded-md text-sm font-medium"
                   >
                     Sign Out
@@ -147,7 +147,7 @@ const NavBar: React.FC = () => {
                         </span>
                       </div>
                       <Button
-                        onClick={() => signOut()}
+                        onClick={() => logout()}
                         className="w-full justify-start gap-2"
                         variant="ghost"
                       >
