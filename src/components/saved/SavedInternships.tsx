@@ -28,8 +28,10 @@ const SavedInternships: React.FC = () => {
         
         if (error) throw error;
         
-        // Explicitly type the response data and then map to our application type
-        const typedData = (data || []) as SupabaseInternshipRecord[];
+        // Fix the type issue by explicitly typing the data
+        const typedData = data as SupabaseInternshipRecord[];
+        
+        // Map the data to our application type with guaranteed id
         const internshipsWithId = typedData.map((item) => ({
           id: item.id || `internship-${Math.random().toString(36).substring(2, 9)}`,
           apply: item.apply,

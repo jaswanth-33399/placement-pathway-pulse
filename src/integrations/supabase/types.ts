@@ -165,6 +165,42 @@ export type Database = {
         }
         Relationships: []
       }
+      navigation_link: {
+        Row: {
+          link_text: string | null
+          position: string | null
+          url: string | null
+        }
+        Insert: {
+          link_text?: string | null
+          position?: string | null
+          url?: string | null
+        }
+        Update: {
+          link_text?: string | null
+          position?: string | null
+          url?: string | null
+        }
+        Relationships: []
+      }
+      navigation_links: {
+        Row: {
+          link_text: string | null
+          position: number | null
+          url: string | null
+        }
+        Insert: {
+          link_text?: string | null
+          position?: number | null
+          url?: string | null
+        }
+        Update: {
+          link_text?: string | null
+          position?: number | null
+          url?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           id: string

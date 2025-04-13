@@ -17,6 +17,7 @@ import Calendar from "./pages/Calendar";
 import Resources from "./pages/Resources";
 import Community from "./pages/Community";
 import Saved from "./pages/Saved";
+import NavigationLinks from "./pages/NavigationLinks";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -73,6 +74,8 @@ const App = () => (
                   <Saved />
                 </ProtectedRoute>
               } />
+              
+              <Route path="/navigation-links" element={<NavigationLinks />} />
               
               <Route path="*" element={<NotFound />} />
             </Routes>

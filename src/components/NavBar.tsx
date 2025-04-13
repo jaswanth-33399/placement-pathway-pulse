@@ -108,6 +108,18 @@ const NavBar: React.FC = () => {
               >
                 Saved
               </NavLink>
+              <NavLink 
+                to="/navigation-links" 
+                className={({ isActive }) => 
+                  `px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                    isActive 
+                      ? 'bg-ipblue-100 text-ipblue-700' 
+                      : 'text-gray-700 hover:bg-ipblue-50 hover:text-ipblue-600'
+                  }`
+                }
+              >
+                Links
+              </NavLink>
             </div>
             
             <div className="mt-4 md:mt-0">
@@ -116,6 +128,23 @@ const NavBar: React.FC = () => {
               </Button>
             </div>
           </>
+        )}
+        
+        {!user && (
+          <div>
+            <NavLink 
+              to="/navigation-links" 
+              className={({ isActive }) => 
+                `px-3 py-2 rounded-md text-sm font-medium transition-colors ${
+                  isActive 
+                    ? 'bg-ipblue-100 text-ipblue-700' 
+                    : 'text-gray-700 hover:bg-ipblue-50 hover:text-ipblue-600'
+                }`
+              }
+            >
+              Navigation Links
+            </NavLink>
+          </div>
         )}
       </div>
     </nav>
