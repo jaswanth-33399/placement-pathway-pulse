@@ -5,18 +5,13 @@ import { Button } from '@/components/ui/button';
 import NavBar from '@/components/NavBar';
 import { useAuth } from '@/context/AuthContext';
 import { useData } from '@/context/DataContext';
-import { Calendar, BookmarkIcon, Megaphone, BriefcaseIcon, GraduationCap, MessagesSquare } from 'lucide-react';
+import { Calendar, BriefcaseIcon, GraduationCap, MessagesSquare, BrainCircuit } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
   const { 
-    internships, 
-    jobs, 
-    savedInternships, 
-    savedJobs, 
     calendarEvents, 
-    companyReviews, 
     discussionPosts 
   } = useData();
   
@@ -54,17 +49,8 @@ const Dashboard: React.FC = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Available Internships</span>
-                  <span className="font-medium">{internships.length}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Saved Internships</span>
-                  <span className="font-medium">{savedInternships.length}</span>
-                </div>
-              </div>
-              <Button className="w-full mt-4 bg-ipblue-600 hover:bg-ipblue-700" asChild>
+              <p className="text-gray-600 mb-4">Explore and discover internship opportunities from leading companies.</p>
+              <Button className="w-full mt-2 bg-ipblue-600 hover:bg-ipblue-700" asChild>
                 <Link to="/internships">View Internships</Link>
               </Button>
             </CardContent>
@@ -78,17 +64,8 @@ const Dashboard: React.FC = () => {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="space-y-2">
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Available Jobs</span>
-                  <span className="font-medium">{jobs.length}</span>
-                </div>
-                <div className="flex justify-between">
-                  <span className="text-gray-600">Saved Jobs</span>
-                  <span className="font-medium">{savedJobs.length}</span>
-                </div>
-              </div>
-              <Button className="w-full mt-4 bg-ipblue-600 hover:bg-ipblue-700" asChild>
+              <p className="text-gray-600 mb-4">Find and apply to job openings that match your skills and experience.</p>
+              <Button className="w-full mt-2 bg-ipblue-600 hover:bg-ipblue-700" asChild>
                 <Link to="/hiring">View Jobs</Link>
               </Button>
             </CardContent>
@@ -160,14 +137,14 @@ const Dashboard: React.FC = () => {
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center">
-                <Megaphone className="h-5 w-5 mr-2 text-ipblue-600" />
-                Resources
+                <BrainCircuit className="h-5 w-5 mr-2 text-ipblue-600" />
+                AI Quiz
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-4">
-              <p className="text-gray-600">Access study materials and resources to enhance your skills.</p>
+              <p className="text-gray-600">Practice interview questions with our AI-powered quiz generator.</p>
               <Button className="w-full bg-ipblue-600 hover:bg-ipblue-700" asChild>
-                <Link to="/resources">Browse Resources</Link>
+                <Link to="/ai-quiz">Take a Quiz</Link>
               </Button>
             </CardContent>
           </Card>
