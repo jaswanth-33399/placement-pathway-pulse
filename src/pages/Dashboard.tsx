@@ -1,4 +1,3 @@
-
 import React, { useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -60,13 +59,13 @@ const Dashboard: React.FC = () => {
             <CardHeader className="pb-2">
               <CardTitle className="text-lg flex items-center">
                 <BriefcaseIcon className="h-5 w-5 mr-2 text-ipblue-600" />
-                Browse Jobs
+                Browse Hiring
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-gray-600 mb-4">Find and apply to job openings that match your skills and experience.</p>
+              <p className="text-gray-600 mb-4">Find and apply to job opportunities that match your skills and experience.</p>
               <Button className="w-full mt-2 bg-ipblue-600 hover:bg-ipblue-700" asChild>
-                <Link to="/hiring">View Jobs</Link>
+                <Link to="/hiring">View Hiring</Link>
               </Button>
             </CardContent>
           </Card>

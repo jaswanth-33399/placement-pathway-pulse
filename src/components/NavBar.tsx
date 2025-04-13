@@ -28,11 +28,11 @@ const NavBar: React.FC = () => {
   const { user, logout } = useAuth();
   const location = useLocation();
 
-  // Update the navigation items array to include the new AI Quiz page and rename Resources
+  // Update 'Jobs' to 'Hiring'
   const navigationItems = [
     { name: 'Dashboard', href: '/dashboard', icon: Home },
     { name: 'Internships', href: '/internships', icon: Briefcase },
-    { name: 'Jobs', href: '/hiring', icon: Briefcase },
+    { name: 'Hiring', href: '/hiring', icon: Briefcase },
     { name: 'Calendar', href: '/calendar', icon: Calendar },
     { name: 'Resources', href: '/resources', icon: Book },
     { name: 'AI Quiz', href: '/ai-quiz', icon: BrainCircuit },
